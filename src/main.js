@@ -10,7 +10,7 @@ let config = {
         arcade: {
         }
     },
-    scene: [ Load, Play ]
+    scene: [ Load, Play, Enemy ]
 }
 var game = new Phaser.Game(config);
 //set keys

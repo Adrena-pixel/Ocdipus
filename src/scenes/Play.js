@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
     create() {
         this.createcharacter();
         this.createground();//for test
+        this.createenemy();
         this.createCollider();
         this.createInput();
         this.createCameras();
@@ -34,6 +35,10 @@ class Play extends Phaser.Scene {
         .setImmovable(true)
         .setOrigin(0,0);
     }
+
+    createenemy() {
+        this.enemy = new Enemy(this, 770, 300, 0).setOrigin(0,0);
+    }
     
     createCollider() {
         //for test
@@ -42,5 +47,6 @@ class Play extends Phaser.Scene {
 
     update() {
         this.character.update();
+        this.enemy.update();
     }
 }

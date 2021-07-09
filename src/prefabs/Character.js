@@ -17,7 +17,7 @@ class Character extends Phaser.GameObjects.Sprite {
         const onFloor = this.body.onFloor();
 
         if (Phaser.Input.Keyboard.JustDown(keyZ) && (onFloor || this.jumpcount < this.secondjump)) {
-            this.body.velocity.y = -200;
+            this.body.velocity.y = -150;
             this.jumpcount++;
             if (onFloor) {
                 this.jumpcount = 0;
@@ -25,17 +25,17 @@ class Character extends Phaser.GameObjects.Sprite {
         }
 
         if (keyLEFT.isDown && keyRIGHT.isUp) {
-            this.body.setVelocityX(-150);
+            this.body.setVelocityX(-75);
         } else if (keyRIGHT.isDown && keyLEFT.isUp) {
-            this.body.setVelocityX(150);
+            this.body.setVelocityX(75);
         } else {
             this.body.velocity.x = 0;
         }
 
         if (keySHIFT.isDown && keyLEFT.isDown && keyRIGHT.isUp) {
-            this.body.setVelocityX(-300);
+            this.body.setVelocityX(-150);
         } else if (keySHIFT.isDown && keyRIGHT.isDown && keyLEFT.isUp) {
-            this.body.setVelocityX(300)
+            this.body.setVelocityX(150);
         }
 
 
