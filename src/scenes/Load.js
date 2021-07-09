@@ -4,7 +4,7 @@ class Load extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('character', './assets/character.png');
+        this.load.image('character', './assets/Character.png');
         this.load.image('ground', './assets/ground.png');//for test
         this.load.image('enemy', './assets/enemy.png');
     }

@@ -43,6 +43,8 @@ class Play extends Phaser.Scene {
     createCollider() {
         //for test
         this.physics.add.collider(this.character, this.ground);
+        this.physics.add.collider(this.enemy, this.ground);
+        this.physics.add.collider(this.character, this.enemy);
     }
 
     update() {
