@@ -5,12 +5,21 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        
+
         this.createcharacter();
-        this.createground();//for test
+        //this.createground();//for test
         this.createenemy();
-        this.createCollider();
+        
         this.createInput();
         this.createCameras();
+
+        this.map = this.add.tilemap('map');
+        var tile = this.map.addTilesetImage('tile', 'tiles'); //( name of tile in tiled, key)
+        this.layer = this.map.createLayer('ground', tile, 0 ,0);
+
+        this.createCollider();
+        
     }
 
     //set key
@@ -27,7 +36,7 @@ class Play extends Phaser.Scene {
     }
 
     createcharacter() {
-        this.character = new Character(this, 570, 300, 0).setOrigin(0,0);
+        this.character = new Character(this, 270, 1500, 0).setOrigin(0,0);
     }
     // for test
     createground() {
@@ -42,9 +51,12 @@ class Play extends Phaser.Scene {
     
     createCollider() {
         //for test
-        this.physics.add.collider(this.character, this.ground);
+        //this.physics.add.collider(this.character, this.ground);
         this.physics.add.collider(this.enemy, this.ground);
         this.physics.add.collider(this.character, this.enemy);
+        this.physics.add.collider(this.character, this.layer);
+        this.physics.add.collider(this.character, this.layer);
+        this.layer.setCollisionBetween(0,50);
     }
 
     update() {

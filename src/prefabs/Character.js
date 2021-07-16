@@ -12,7 +12,7 @@ class Character extends Phaser.GameObjects.Sprite {
         this.jump = false;
         this.secondjump = 1;
         this.body.setGravityY(250);
-        this.body.setCollideWorldBounds(true);
+        this.body.setCollideWorldBounds(false);
 
         const onFloor = this.body.onFloor();
 
