@@ -7,7 +7,15 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        this.body.setGravityY(250);
-        this.body.setCollideWorldBounds(true);
+        this.body.setGravityY(900);
+        this.body.setCollideWorldBounds(false);
+        this.body.setCircle(50, 0, 0);
+        this.body.setImmovable(true);
+        
     }
+
+   
+
+    
+    
 }

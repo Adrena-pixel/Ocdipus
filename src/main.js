@@ -8,10 +8,11 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
+            debug: true
         }
     },
     scene: [ Load, Play ]
 }
 var game = new Phaser.Game(config);
 //set keys
-let keySHIFT, keyLEFT, keyRIGHT, keyZ;
+let keySHIFT, keyLEFT, keyRIGHT, keyZ, keyDOWN;
