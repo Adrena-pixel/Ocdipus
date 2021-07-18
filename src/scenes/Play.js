@@ -19,7 +19,22 @@ class Play extends Phaser.Scene {
         this.layer = this.map.createLayer('ground', tile, 0 ,0);
 
         this.createCollider();
+        this.add_bgm();
         
+    }
+    //add background music
+    add_bgm(){
+        this.bgm = this.sound.add('bgm');
+            var bgmconfig = {
+                mute: false,
+                volume: 1,
+                rate: 1,
+                detune: 0,
+                seek: 0,
+                loop: true,
+                delay: 0
+            }
+        this.bgm.play (bgmconfig)
     }
 
     //set key
