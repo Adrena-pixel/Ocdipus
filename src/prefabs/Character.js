@@ -14,7 +14,7 @@ class Character extends Phaser.GameObjects.Sprite {
 
     update() {
         this.jump = false;
-        this.secondjump = 1;
+        this.secondjump = 2;
         this.body.setGravityY(800);
         this.body.setCollideWorldBounds(false);
 
@@ -23,7 +23,7 @@ class Character extends Phaser.GameObjects.Sprite {
         
         if (Phaser.Input.Keyboard.JustDown(keyZ) && (onFloor || (onWall && this.jumpcount < this.secondjump))){
             this.jumpcount++
-            this.body.velocity.y = -600;
+            this.body.velocity.y = -550;
 
             if(onFloor) {
                 this.jumpcount = 0;
