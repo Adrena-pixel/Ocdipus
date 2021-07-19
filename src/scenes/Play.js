@@ -74,10 +74,14 @@ class Play extends Phaser.Scene {
     }
     
     createCollider() {
-        this.physics.add.collider(this.character, this.enemy);
+        this.physics.add.collider(this.character, this.enemy, this.hit);
         this.physics.add.collider(this.enemy, this.layer);
         this.physics.add.collider(this.character, this.layer);
         this.layer.setCollisionBetween(0,70);
+    }
+
+    hit() {
+        console.log(character_hp);
     }
 
 
@@ -184,7 +188,7 @@ class Play extends Phaser.Scene {
             this.enemy.y -= 20;
             this.enemy.hp -= character_attack;
             //console.log('attack from left');
-            //console.log(this.enemy.hp);
+            // console.log(this.enemy.hp);
         }
         else if (this.enemy.x - this.character.x < 0){
             this.enemy.x -= 100;

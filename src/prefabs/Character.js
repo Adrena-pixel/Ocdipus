@@ -1,5 +1,6 @@
 //视角切换上下键
 //近战（x）远程（c）
+var character_hp = 100;
 class Character extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, frame) {
         super(scene, x, y, 'character', frame);
@@ -13,8 +14,6 @@ class Character extends Phaser.GameObjects.Sprite {
         this.direction = 'left';
         this.swing = false;
         this.moving = false;
-
-        this.hp = 100;
 
     }
 
@@ -57,6 +56,13 @@ class Character extends Phaser.GameObjects.Sprite {
             this.body.setVelocityX(-250);
         } else if (keySHIFT.isDown && keyRIGHT.isDown && keyLEFT.isUp && onFloor ) {
             this.body.setVelocityX(250);
+        }
+
+        if (this.character_hp == 0){
+            this.body.enable = false;
+            this.setActive(false).setVisible(false);
+            this.body.destroy();
+            console.log(character_hp);
         }
 
     }
