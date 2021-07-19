@@ -10,6 +10,12 @@ class Character extends Phaser.GameObjects.Sprite {
         this.jump_airSound = scene.sound.add('jump_air');
         this.jumpcount = 0;
 
+        this.direction = 'left';
+        this.swing = false;
+        this.moving = false;
+
+        this.hp = 100;
+
     }
 
     update() {
@@ -30,11 +36,20 @@ class Character extends Phaser.GameObjects.Sprite {
             }
         }
 
-        if (keyLEFT.isDown && keyRIGHT.isUp ) {
+        if (keyLEFT.isDown && keyRIGHT.isUp) {
             this.body.setVelocityX(-200);
+            this.moving = true;
+            this.flipX = true;
         } else if (keyRIGHT.isDown && keyLEFT.isUp ) {
             this.body.setVelocityX(200);
+            this.moving = true;
+            this.flipX = false;
         } else {
+            this.moving = false;
+            this.body.velocity.x = 0;
+        }
+
+        if (this.swing == true && onFloor){
             this.body.velocity.x = 0;
         }
 
@@ -44,18 +59,5 @@ class Character extends Phaser.GameObjects.Sprite {
             this.body.setVelocityX(250);
         }
 
-        //wall jump
-        /*if (this.body.onWall() && this.body.blocked.left && this.jumpcount < this.secondjump){
-            if (keyLEFT.isDown && Phaser.Input.Keyboard.JustDown(keyZ)){
-                this.body.setGravityY(-800);
-                this.body.setVelocityX(550);
-                this.jumpcount++;     
-            }
-            
-        }
-        if (onFloor) {
-            this.jumpcount = 0;
-        }*/
-        
     }
 }

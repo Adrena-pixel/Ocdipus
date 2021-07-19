@@ -1,16 +1,17 @@
 var cursors;
+var character_attack = 30;
 class Play extends Phaser.Scene {
     constructor() {
         super('PlayScene')
     }
 
     create() {
-        
+        this.beattacked = false;
+        this.BounceVelocity = 250;
 
-        this.createcharacter();
-        //this.createground();//for test
-        this.createenemy();
         
+        this.createenemy();
+        this.createcharacter();
         this.createInput();
         this.createCameras();
 
@@ -19,15 +20,20 @@ class Play extends Phaser.Scene {
         this.layer = this.map.createLayer('ground', tile, 0 ,0);
 
         this.createCollider();
-        this.add_bgm();
+        this.create_hitbox();
+        //this.physics.add.overlap (this.hitbox, this.enemy, this.enemy_damage, undefined, this);
+        this.physics.add.overlap(this.hitbox, this.enemy, this.enemy_damage, this.hitbox_reset, this);
+        this.physics.add.collider(this.character, this.enemy, this.attacked, undefined, this);
         
+    
+        this.add_bgm();   
     }
     //add background music
     add_bgm(){
         this.bgm = this.sound.add('bgm');
             var bgmconfig = {
                 mute: false,
-                volume: 1,
+                volume: 0.5,
                 rate: 1,
                 detune: 0,
                 seek: 0,
@@ -44,6 +50,7 @@ class Play extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
     }
 
@@ -54,7 +61,8 @@ class Play extends Phaser.Scene {
     createcharacter() {
         this.character = new Character(this, 270, 1500, 0).setOrigin(0,0);
     }
-    // for test
+
+
     createground() {
         this.ground = this.physics.add.sprite(100, 500, 'ground')
         .setImmovable(true)
@@ -66,9 +74,6 @@ class Play extends Phaser.Scene {
     }
     
     createCollider() {
-        //for test
-        //this.physics.add.collider(this.character, this.ground);
-        //this.physics.add.collider(this.enemy, this.ground);
         this.physics.add.collider(this.character, this.enemy);
         this.physics.add.collider(this.enemy, this.layer);
         this.physics.add.collider(this.character, this.layer);
@@ -78,11 +83,14 @@ class Play extends Phaser.Scene {
 
     update() {
         this.character.update();
+        
         this.enemy.update();
         this.charge();
-        //this.enemy_attack()
-
         
+        this.hitbox_set();
+        
+
+        // this.Bounce();        
     }
 
     range_check(character, enemy){
@@ -100,47 +108,92 @@ class Play extends Phaser.Scene {
     charge(){
         if (this.range_check(this.character, this.enemy)){
             if (this.enemy.x - this.character.x >= 0 && this.enemy.y - 40 <= this.character.y){
-                console.log(this.enemy.body.velocity.x);
                 this.enemy.body.setVelocityX(-150);
             }else if (this.enemy.x - this.character.x < 0 && this.enemy.y - 40 <= this.character.y){
-                console.log(this.enemy.body.velocity.x);
                 this.enemy.body.setVelocityX(150);
             }
             else {
-                console.log(this.enemy.body.velocity.x);
                 this.enemy.body.setVelocityX(0);
             }
         }
         else{
             this.enemy.body.setVelocityX(0);
             }
+
     }
-    /*enemy_attack(){
-        if (this.range_check(this.character, this.enemy)){
-            this.attack();
-            //console.log('attack');
-            var resettimer = this.time.addEvent({
-                delay: 5000,                // ms
-                callback: this.body_reset,
-                callbackScope: this,
-                loop: true,
-            });
+
+    attacked(){
+        this.character.hp - this.enemy.hp;
+    }
+
+
+    //player attack
+    //create new hitbox
+    create_hitbox(){
+        this.hitbox = this.add.rectangle(200, 1400, 100, 80, 0xffffff, 0).setOrigin(0, 0);
+        this.physics.add.existing(this.hitbox);
+        this.physics.world.remove(this.hitbox.body);
+    }
+
+    hitbox_set(){
+        if(Phaser.Input.Keyboard.JustDown(keyX) && this.character.swing == false){
+            //this.create_hitbox();
+            this.hitbox.body.enable = true;
+            if (this.character.flipX == false){
+                this.hitbox.x = this.character.x + this.character.width;
+                this.hitbox.y = this.character.y;
+                this.physics.world.add(this.hitbox.body);
+                //this.physics.add.collider(this.hitbox.body);
+                this.character.swing = true;
+
+                this.time.addEvent({
+                    delay: 600,
+                    callback: this.hitbox_reset,
+                    callbackScope: this,
+                    loop: false
+                });
+            }else{
+                this.hitbox.x = this.character.x - this.hitbox.width;
+                this.hitbox.y = this.character.y;
+                this.physics.world.add(this.hitbox.body);
+                //this.physics.add.collider(this.hitbox.body);
+                this.character.swing = true;
+
+                this.time.addEvent({
+                    delay: 600,
+                    callback: this.hitbox_reset,
+                    callbackScope: this,
+                    loop: false
+                });
+            }
+           
         }
     }
 
-    body_reset(){
-        //console.log('reset');
-        this.enemy.body.setSize(this.enemy.width, this.enemy.height, true);
-        var attacktimer = this.time.addEvent({
-            delay: 5000,                // ms
-            callback: this.enemy_attack,
-            callbackScope: this,
-            loop: true,
-        });
+    hitbox_reset(){
+
+        this.physics.world.remove(this.hitbox.body);
+        this.hitbox.body.enable = false;
+        this.character.swing = false;
     }
 
-    attack(){
-        this.enemy.body.setSize(this.enemy.width * 4, this.enemy.height, true);
+    enemy_damage(){
+        //console.log('enemy_damage');
+        if (this.enemy.x - this.character.x > 0){ //the enemy is right to the player
+            this.enemy.x += 100;
+            this.enemy.y -= 20;
+            this.enemy.hp -= character_attack;
+            //console.log('attack from left');
+            //console.log(this.enemy.hp);
+        }
+        else if (this.enemy.x - this.character.x < 0){
+            this.enemy.x -= 100;
+            this.enemy.y -= 20;
+            this.enemy.hp -= character_attack;
+            //console.log('attack from right');
+            //console.log(this.enemy.hp);
+        }
 
-    }*/
+    }
+    
 }
