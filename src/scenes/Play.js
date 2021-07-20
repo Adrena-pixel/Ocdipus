@@ -57,7 +57,7 @@ class Play extends Phaser.Scene {
     }
 
     createcharacter() {
-        this.character = new Character(this, 270, 1500, 0).setOrigin(0,0);
+        this.character = new Character(this, 32, 800, 0).setOrigin(0,0);
     }
 
 
@@ -68,7 +68,7 @@ class Play extends Phaser.Scene {
     }
 
     createenemy() {
-        this.enemy = new Enemy(this, 770, 1500, 0).setOrigin(0,0);
+        this.enemy = new Enemy(this, 3200, 640, 0).setOrigin(0,0);
     }
     
     createCollider() {

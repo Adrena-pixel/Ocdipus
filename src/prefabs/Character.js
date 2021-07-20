@@ -37,11 +37,11 @@ class Character extends Phaser.GameObjects.Sprite {
         }
 
         if (keyLEFT.isDown && keyRIGHT.isUp) {
-            this.body.setVelocityX(-200);
+            this.body.setVelocityX(-250);
             this.moving = true;
             this.flipX = true;
         } else if (keyRIGHT.isDown && keyLEFT.isUp ) {
-            this.body.setVelocityX(200);
+            this.body.setVelocityX(250);
             this.moving = true;
             this.flipX = false;
         } else {
@@ -54,9 +54,9 @@ class Character extends Phaser.GameObjects.Sprite {
         }
 
         if (keySHIFT.isDown && keyLEFT.isDown && keyRIGHT.isUp && onFloor ) {
-            this.body.setVelocityX(-250);
+            this.body.setVelocityX(-350);
         } else if (keySHIFT.isDown && keyRIGHT.isDown && keyLEFT.isUp && onFloor ) {
-            this.body.setVelocityX(250);
+            this.body.setVelocityX(350);
         }
 
         // if (this.character_hp == 0){
