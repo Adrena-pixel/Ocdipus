@@ -17,6 +17,7 @@ class Lose extends Phaser.Scene {
             },
             fixedWidth: 0
         }
+        this.add.text(220, 250, 'Game Over', menuConfig).setOrigin(0, 0);
         this.add.text(220, 350, 'press z to restart', menuConfig).setOrigin(0, 0);
         this.add.text(220, 450, 'press x to menu', menuConfig).setOrigin(0, 0);
         keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);

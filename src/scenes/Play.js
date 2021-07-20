@@ -19,10 +19,14 @@ class Play extends Phaser.Scene {
         var tile = this.map.addTilesetImage('tile', 'tiles'); //( name of tile in tiled, key)
         this.layer = this.map.createLayer('ground', tile, 0 ,0);
 
+        this.goal = this.add.sprite(5400, 450, 'enemy');
+
         
         this.create_hitbox();
         this.createCollider();
         //this.display_hp();
+
+        
         this.add_bgm();   
     }
 
@@ -39,6 +43,7 @@ class Play extends Phaser.Scene {
         this.enemy.update();
         this.charge();
         this.lose();
+        this.win();
         this.hitbox_set();      
     }
 
@@ -241,7 +246,18 @@ class Play extends Phaser.Scene {
                 })
             }
     }
-
+    win(){
+        if (this.character.x >= 5400- this.character.width){ //6272
+            this.bgm.stop();
+            this.time.addEvent({
+                delay: 0,
+                callback: () => {
+                    this.scene.start('winScene');
+                },
+                loop: false
+            })
+        }
+    }
    
     
 }
