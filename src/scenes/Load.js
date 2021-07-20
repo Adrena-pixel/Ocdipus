@@ -13,9 +13,9 @@ class Load extends Phaser.Scene {
         this.load.image('title', './assets/title.png');
         this.load.tilemapTiledJSON('map','./assets/mapsheet.json'); //load tile map
 
-        this.load.audio('jump', './assets/Jump01.wav');
-        this.load.audio('jump_air', './assets/Jump_air.wav');
-        this.load.audio('range_attack', './assets/rangedAttack1.wav');
+        this.load.audio('jump', './assets/JumpOdps.wav');
+        this.load.audio('attack', './assets/meleeAttack.wav');
+        this.load.audio('be_hit', './assets/beHit.wav');
         this.load.audio('bgm', './assets/OdpsBGM.mp3');
     }
 

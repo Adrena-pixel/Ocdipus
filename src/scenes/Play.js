@@ -100,6 +100,7 @@ class Play extends Phaser.Scene {
 
     hit() {
         //console.log(character_hp);
+        this.sound.play('be_hit');
         let dx = this.character.x - (this.enemy.x);
         let dy = -10;
         let dir = new Phaser.Math.Vector2(dx, dy).normalize().scale(500);
@@ -171,6 +172,7 @@ class Play extends Phaser.Scene {
 
     hitbox_set(){
         if(Phaser.Input.Keyboard.JustDown(keyX) && this.character.swing == false){
+            this.sound.play('attack');
             //this.create_hitbox();
             this.hitbox.body.enable = true;
             if (this.character.flipX == false){
@@ -229,6 +231,7 @@ class Play extends Phaser.Scene {
     lose(){
         if (this.character.y >= 1024 ||
             this.character.hp <= 0){
+                this.bgm.stop();
                 this.time.addEvent({
                     delay: 100,
                     callback: () => {

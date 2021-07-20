@@ -8,7 +8,6 @@ class Character extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.jumpSound = scene.sound.add('jump');
-        this.jump_airSound = scene.sound.add('jump_air');
         this.jumpcount = 0;
 
         this.direction = 'left';
@@ -31,7 +30,7 @@ class Character extends Phaser.GameObjects.Sprite {
         if (Phaser.Input.Keyboard.JustDown(keyZ) && (onFloor || (onWall && this.jumpcount < this.secondjump))){
             this.jumpcount++
             this.body.velocity.y = -550;
-
+            this.jumpSound.play();
             if(onFloor) {
                 this.jumpcount = 0;
             }
