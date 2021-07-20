@@ -27,7 +27,6 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        
         if (this.character.hit > 0){
             ++this.character.hit;
             if (this.character.hit > 30){
@@ -35,19 +34,16 @@ class Play extends Phaser.Scene {
             }
             return;
         }
+        this.ntr_move();
         this.character.update();
         
         this.enemy.update();
         this.charge();
         
-        this.hitbox_set();
-        this.lose();
-        
-        //this.physics.add.collider(this.character, this.enemy, this.attacked, undefined, this);
-        //this.physics.add.overlap(this.character, this.enemy, this.attacked, undefined, this);
-        // this.Bounce();        
+        this.hitbox_set();      
     }
-    
+
+
     //add background music
     add_bgm(){
         this.bgm = this.sound.add('bgm');
@@ -104,10 +100,10 @@ class Play extends Phaser.Scene {
 
     hit() {
         //console.log(character_hp);
-        this.dx = this.character.x - (this.enemy.x);
-        this.dy = -10;
-        this.dir = new Phaser.Math.Vector2(this.dx, this.dy).normalize().scale(500);
-        this.character.body.setVelocity(this.dir.x, this.dir.y);
+        let dx = this.character.x - (this.enemy.x);
+        let dy = -10;
+        let dir = new Phaser.Math.Vector2(dx, dy).normalize().scale(500);
+        this.character.body.setVelocity(dir.x, dir.y);
         this.character.hit = 1;
     }
 
@@ -125,29 +121,32 @@ class Play extends Phaser.Scene {
     }
     overlap_check(character, enemy){
         if (character.x >= enemy.x &&
-            character.x + character.width <= enemy.x + enemy.width &&
+            character.x <= enemy.x + enemy.width &&
             character.y >= enemy.y  &&
-            character.y + character.height<= enemy.y + enemy.height){
-            return true;}
-
+            character.y <= enemy.y + enemy.height){
+            return true;
+        }
         else{
             return false;
         }
     }
-
-    charge(){
-        if(this.overlap_check(this.character, this.enemy)){
+    ntr_move(){
+        
+            //console.log('overlap_checked');
             if(this.enemy.body.blocked.left){
                 this.enemy.x + this.enemy.x.width + this.character.width * 1.5;
             }
             else if (this.enemy.body.blocked.right){
                 this.enemy.x - this.character.width * 1.5;
             }
-        }
-        else if (this.range_check(this.character, this.enemy)){
-            if (this.enemy.x - this.character.x >= 0 && this.enemy.y - 40 <= this.character.y){
+    }
+    charge(){
+        
+        if (this.range_check(this.character, this.enemy)){
+            if (this.enemy.x - this.character.x >= 0 && this.enemy.y - 60 <= this.character.y){
                 this.enemy.body.setVelocityX(-150);
-            }else if (this.enemy.x - this.character.x < 0 && this.enemy.y - 40 <= this.character.y){
+                
+            }else if (this.enemy.x - this.character.x < 0 && this.enemy.y - 60 <= this.character.y){
                 this.enemy.body.setVelocityX(150);
             }
             else {
@@ -218,21 +217,17 @@ class Play extends Phaser.Scene {
             this.enemy.x += 100;
             this.enemy.y -= 20;
             this.enemy.hp -= character_attack;
-            //console.log('attack from left');
-            // console.log(this.enemy.hp);
         }
         else if (this.enemy.x - this.character.x < 0){
             this.enemy.x -= 100;
             this.enemy.y -= 20;
             this.enemy.hp -= character_attack;
-            //console.log('attack from right');
-            //console.log(this.enemy.hp);
         }
 
     }
 
     lose(){
-        if (this.character.y >= 1500 ||
+        if (this.character.y >= 1024 ||
             this.character.hp <= 0){
                 this.time.addEvent({
                     delay: 100,
@@ -245,4 +240,6 @@ class Play extends Phaser.Scene {
     }
 
    
+    
 }
+

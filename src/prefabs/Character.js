@@ -1,6 +1,6 @@
 //视角切换上下键
 //近战（x）远程（c）
-var character_hp = 100;
+var character_hp;
 class Character extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, frame) {
         super(scene, x, y, 'character', frame);
@@ -15,6 +15,7 @@ class Character extends Phaser.GameObjects.Sprite {
         this.swing = false;
         this.moving = false;
         this.hit = 0;
+        this.hp = 100;
 
     }
 
