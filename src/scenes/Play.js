@@ -19,12 +19,9 @@ class Play extends Phaser.Scene {
         var tile = this.map.addTilesetImage('tile', 'tiles'); //( name of tile in tiled, key)
         this.layer = this.map.createLayer('ground', tile, 0 ,0);
 
-        this.createCollider();
-        this.create_hitbox();
-        this.physics.add.overlap(this.hitbox, this.enemy, this.enemy_damage, this.hitbox_reset, this);
-        //this.physics.add.collider(this.character, this.enemy, this.attacked, undefined, this);
-        //this.physics.add.overlap(this.character, this.enemy, this.attacked, undefined, this);
         
+        this.create_hitbox();
+        this.createCollider();
     
         this.add_bgm();   
     }
@@ -75,29 +72,22 @@ class Play extends Phaser.Scene {
     }
     
     createCollider() {
-        //this.physics.add.collider(this.character, this.enemy, this.hit);
+        this.physics.add.collider(this.character, this.enemy, this.hit, undefined, this);
         this.physics.add.collider(this.enemy, this.layer);
         this.physics.add.collider(this.character, this.layer);
         this.layer.setCollisionBetween(0,70);
+        this.physics.add.overlap(this.hitbox, this.enemy, this.enemy_damage, this.hitbox_reset, this);
     }
 
     hit() {
-        console.log(character_hp);
+        //console.log(character_hp);
+        this.dx = this.character.x - (this.enemy.x);
+        this.dy = -10;
+        this.dir = new Phaser.Math.Vector2(this.dx, this.dy).normalize().scale(500);
+        this.character.body.setVelocity(this.dir.x, this.dir.y);
+        this.character.hit = 1;
     }
 
-
-    update() {
-        this.character.update();
-        
-        this.enemy.update();
-        this.charge();
-        
-        this.hitbox_set();
-        
-        //this.physics.add.collider(this.character, this.enemy, this.attacked, undefined, this);
-        this.physics.add.overlap(this.character, this.enemy, this.attacked, undefined, this);
-        // this.Bounce();        
-    }
 
     range_check(character, enemy){
         if (character.x >= enemy.x - 400 &&
@@ -110,9 +100,28 @@ class Play extends Phaser.Scene {
             return false;
         }
     }
+    overlap_check(character, enemy){
+        if (character.x >= enemy.x &&
+            character.x + character.width <= enemy.x + enemy.width &&
+            character.y >= enemy.y  &&
+            character.y + character.height<= enemy.y + enemy.height){
+            return true;}
+
+        else{
+            return false;
+        }
+    }
 
     charge(){
-        if (this.range_check(this.character, this.enemy)){
+        if(this.overlap_check(this.character, this.enemy)){
+            if(this.enemy.body.blocked.left){
+                this.enemy.x + this.enemy.x.width + this.character.width * 1.5;
+            }
+            else if (this.enemy.body.blocked.right){
+                this.enemy.x - this.character.width * 1.5;
+            }
+        }
+        else if (this.range_check(this.character, this.enemy)){
             if (this.enemy.x - this.character.x >= 0 && this.enemy.y - 40 <= this.character.y){
                 this.enemy.body.setVelocityX(-150);
             }else if (this.enemy.x - this.character.x < 0 && this.enemy.y - 40 <= this.character.y){
@@ -128,21 +137,6 @@ class Play extends Phaser.Scene {
 
     }
 
-    attacked(){
-        this.cameras.main.stopFollow();
-        this.character.x -= 10;
-        this.character.hp - this.enemy.attack;
-        this.time.addEvent({
-            delay: 600,
-            callback: this.cameras_reset,
-            callbackScope: this,
-            loop: false
-        });
-    }
-    cameras_reset(){
-        //this.cameras.main.setScroll(this.character.x, this.character.y);
-        this.cameras.main.startFollow(this.character, true, 0.5, 0.5);
-    }
 
 
     //player attack
@@ -212,6 +206,27 @@ class Play extends Phaser.Scene {
             //console.log(this.enemy.hp);
         }
 
+    }
+
+    update() {
+        
+        if (this.character.hit > 0){
+            ++this.character.hit;
+            if (this.character.hit > 30){
+                this.character.hit = 0;
+            }
+            return;
+        }
+        this.character.update();
+        
+        this.enemy.update();
+        this.charge();
+        
+        this.hitbox_set();
+        
+        //this.physics.add.collider(this.character, this.enemy, this.attacked, undefined, this);
+        //this.physics.add.overlap(this.character, this.enemy, this.attacked, undefined, this);
+        // this.Bounce();        
     }
     
 }

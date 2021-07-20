@@ -14,6 +14,7 @@ class Character extends Phaser.GameObjects.Sprite {
         this.direction = 'left';
         this.swing = false;
         this.moving = false;
+        this.hit = 0;
 
     }
 
