@@ -216,7 +216,7 @@ class Play extends Phaser.Scene {
         this.hitbox.alpha = 0;
         this.character.swing = false;
     }
-    //
+    
     enemy_damage(){
         //console.log('enemy_damage');
         if (this.enemy.x - this.character.x > 0){ //the enemy is right to the player
