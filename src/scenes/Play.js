@@ -25,6 +25,29 @@ class Play extends Phaser.Scene {
     
         this.add_bgm();   
     }
+
+    update() {
+        
+        if (this.character.hit > 0){
+            ++this.character.hit;
+            if (this.character.hit > 30){
+                this.character.hit = 0;
+            }
+            return;
+        }
+        this.character.update();
+        
+        this.enemy.update();
+        this.charge();
+        
+        this.hitbox_set();
+        this.lose();
+        
+        //this.physics.add.collider(this.character, this.enemy, this.attacked, undefined, this);
+        //this.physics.add.overlap(this.character, this.enemy, this.attacked, undefined, this);
+        // this.Bounce();        
+    }
+    
     //add background music
     add_bgm(){
         this.bgm = this.sound.add('bgm');
@@ -209,7 +232,7 @@ class Play extends Phaser.Scene {
     }
 
     lose(){
-        if (this.character.y >= 1024 ||
+        if (this.character.y >= 1500 ||
             this.character.hp <= 0){
                 this.time.addEvent({
                     delay: 100,
@@ -221,25 +244,5 @@ class Play extends Phaser.Scene {
             }
     }
 
-    update() {
-        
-        if (this.character.hit > 0){
-            ++this.character.hit;
-            if (this.character.hit > 30){
-                this.character.hit = 0;
-            }
-            return;
-        }
-        this.character.update();
-        
-        this.enemy.update();
-        this.charge();
-        
-        this.hitbox_set();
-        
-        //this.physics.add.collider(this.character, this.enemy, this.attacked, undefined, this);
-        //this.physics.add.overlap(this.character, this.enemy, this.attacked, undefined, this);
-        // this.Bounce();        
-    }
-    
+   
 }

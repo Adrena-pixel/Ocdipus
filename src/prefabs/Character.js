@@ -21,7 +21,7 @@ class Character extends Phaser.GameObjects.Sprite {
     update() {
         this.jump = false;
         this.secondjump = 2;
-        this.body.setGravityY(800);
+        this.body.setGravityY(1000);
         this.body.setCollideWorldBounds(false);
 
         const onFloor = this.body.onFloor();
@@ -54,9 +54,9 @@ class Character extends Phaser.GameObjects.Sprite {
         }
 
         if (keySHIFT.isDown && keyLEFT.isDown && keyRIGHT.isUp && onFloor ) {
-            this.body.setVelocityX(-350);
+            this.body.setVelocityX(-300);
         } else if (keySHIFT.isDown && keyRIGHT.isDown && keyLEFT.isUp && onFloor ) {
-            this.body.setVelocityX(350);
+            this.body.setVelocityX(300);
         }
 
         // if (this.character_hp == 0){
