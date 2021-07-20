@@ -22,7 +22,7 @@ class Play extends Phaser.Scene {
         
         this.create_hitbox();
         this.createCollider();
-    
+        //this.display_hp();
         this.add_bgm();   
     }
 
@@ -39,10 +39,14 @@ class Play extends Phaser.Scene {
         
         this.enemy.update();
         this.charge();
-        
+        this.lose();
         this.hitbox_set();      
     }
 
+    display_hp(){
+        this.hpText = this.add.text(this.character.x,this.character.y, `Hp: ${this.character.hp}`, { fontSize: '32px', fill: '#fffdf9'});
+        this.hpText.fixedToCamera = true;
+    }
 
     //add background music
     add_bgm(){
@@ -229,7 +233,7 @@ class Play extends Phaser.Scene {
     }
 
     lose(){
-        if (this.character.y >= 1024 ||
+        if (this.character.y >= 1400 ||
             this.character.hp <= 0){
                 this.bgm.stop();
                 this.time.addEvent({
