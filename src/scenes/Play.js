@@ -14,7 +14,7 @@ class Play extends Phaser.Scene {
         this.createcharacter();
         this.createInput();
         this.createCameras();
-
+        this.create_animation();
         this.map = this.add.tilemap('map');
         var tile = this.map.addTilesetImage('tile', 'tiles'); //( name of tile in tiled, key)
         this.layer = this.map.createLayer('ground', tile, 0 ,0);
@@ -34,7 +34,6 @@ class Play extends Phaser.Scene {
             }
             return;
         }
-        this.ntr_move();
         this.character.update();
         
         this.enemy.update();
@@ -75,6 +74,15 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
     }
 
+    create_animation(){
+        this.anims.create({
+            key: "character_attack",
+            frames: this.anims.generateFrameNumbers('attack', { start: 0, end: 6, first: 0}),
+            frameRate: 30,
+            repeat: 0
+        });
+    }
+
     createCameras() {
         this.cameras.main.startFollow(this.character);
         //this.camera.setBounds(0);
@@ -100,7 +108,7 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.enemy, this.layer);
         this.physics.add.collider(this.character, this.layer);
         this.layer.setCollisionBetween(0,70);
-        this.physics.add.overlap(this.hitbox, this.enemy, this.enemy_damage, this.hitbox_reset, this);
+        this.physics.add.overlap(this.hitbox, this.enemy, this.enemy_damage, undefined, this);
     }
 
     hit() {
@@ -125,27 +133,7 @@ class Play extends Phaser.Scene {
             return false;
         }
     }
-    overlap_check(character, enemy){
-        if (character.x >= enemy.x &&
-            character.x <= enemy.x + enemy.width &&
-            character.y >= enemy.y  &&
-            character.y <= enemy.y + enemy.height){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    ntr_move(){
-        
-            //console.log('overlap_checked');
-            if(this.enemy.body.blocked.left){
-                this.enemy.x + this.enemy.x.width + this.character.width * 1.5;
-            }
-            else if (this.enemy.body.blocked.right){
-                this.enemy.x - this.character.width * 1.5;
-            }
-    }
+   
     charge(){
         
         if (this.range_check(this.character, this.enemy)){
@@ -170,7 +158,8 @@ class Play extends Phaser.Scene {
     //player attack
     //create new hitbox
     create_hitbox(){
-        this.hitbox = this.add.rectangle(200, 1400, 100, 80, 0xffffff, 0).setOrigin(0, 0);
+        //this.hitbox = this.add.rectangle(200, 1400, 100, 80, 0xffffff, 0).setOrigin(0, 0);
+        this.hitbox = this.add.sprite(200, 1400, 'hitbox').setOrigin(0, 0);
         this.physics.add.existing(this.hitbox);
         this.physics.world.remove(this.hitbox.body);
     }
@@ -178,9 +167,13 @@ class Play extends Phaser.Scene {
     hitbox_set(){
         if(Phaser.Input.Keyboard.JustDown(keyX) && this.character.swing == false){
             this.sound.play('attack');
+            this.hitbox.alpha = 1;
+            
             //this.create_hitbox();
-            this.hitbox.body.enable = true;
+            this.hitbox.anims.play('character_attack');
+
             if (this.character.flipX == false){
+                //this.hitbox.scaleX = 1;
                 this.hitbox.x = this.character.x + this.character.width;
                 this.hitbox.y = this.character.y;
                 this.physics.world.add(this.hitbox.body);
@@ -188,12 +181,13 @@ class Play extends Phaser.Scene {
                 this.character.swing = true;
 
                 this.time.addEvent({
-                    delay: 600,
+                    delay: 300,
                     callback: this.hitbox_reset,
                     callbackScope: this,
                     loop: false
                 });
             }else{
+                //this.hitbox.scaleX = -1;
                 this.hitbox.x = this.character.x - this.hitbox.width;
                 this.hitbox.y = this.character.y;
                 this.physics.world.add(this.hitbox.body);
@@ -201,7 +195,7 @@ class Play extends Phaser.Scene {
                 this.character.swing = true;
 
                 this.time.addEvent({
-                    delay: 600,
+                    delay: 300,
                     callback: this.hitbox_reset,
                     callbackScope: this,
                     loop: false
@@ -215,6 +209,7 @@ class Play extends Phaser.Scene {
 
         this.physics.world.remove(this.hitbox.body);
         this.hitbox.body.enable = false;
+        this.hitbox.alpha = 0;
         this.character.swing = false;
     }
 

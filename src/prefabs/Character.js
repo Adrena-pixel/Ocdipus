@@ -7,6 +7,7 @@ class Character extends Phaser.GameObjects.Sprite {
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.body.setSize(this.width * 0.9, this.height);
         this.jumpSound = scene.sound.add('jump');
         this.jumpcount = 0;
 
@@ -15,6 +16,7 @@ class Character extends Phaser.GameObjects.Sprite {
         this.moving = false;
         this.hit = 0;
         this.hp = 100;
+        
 
     }
 
