@@ -10,6 +10,7 @@ class Load extends Phaser.Scene {
         this.load.image('attack', './assets/attack.png');
 
         this.load.image('tiles', './assets/tile.png');
+        this.load.image('title', './assets/title.png');
         this.load.tilemapTiledJSON('map','./assets/mapsheet.json'); //load tile map
 
         this.load.audio('jump', './assets/Jump01.wav');
@@ -19,7 +20,7 @@ class Load extends Phaser.Scene {
     }
 
     create (){
-        this.scene.start('PlayScene');
+        this.scene.start('menuScene');
 
         /*const map = this.make.tilemap({key: 'map'});
         const tileset = tilemap.addTilesetImage('maptile', 'tiles');

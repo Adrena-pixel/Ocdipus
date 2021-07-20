@@ -2,7 +2,7 @@ var cursors;
 var character_attack = 30;
 class Play extends Phaser.Scene {
     constructor() {
-        super('PlayScene')
+        super('playScene')
     }
 
     create() {
@@ -206,6 +206,19 @@ class Play extends Phaser.Scene {
             //console.log(this.enemy.hp);
         }
 
+    }
+
+    lose(){
+        if (this.character.y >= 1024 ||
+            this.character.hp <= 0){
+                this.time.addEvent({
+                    delay: 100,
+                    callback: () => {
+                        this.scene.start('loseScene');
+                    },
+                    loop: false
+                })
+            }
     }
 
     update() {

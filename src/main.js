@@ -11,7 +11,7 @@ let config = {
             debug: true
         }
     },
-    scene: [ Load, Play ]
+    scene: [ Load, Menu,  Play, Lose]
 }
 var game = new Phaser.Game(config);
 //set keys
