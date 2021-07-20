@@ -25,7 +25,6 @@ class Play extends Phaser.Scene {
         this.create_hitbox();
         this.createCollider();
         //this.display_hp();
-
         
         this.add_bgm();   
     }
