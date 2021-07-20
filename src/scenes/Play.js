@@ -21,9 +21,9 @@ class Play extends Phaser.Scene {
 
         this.createCollider();
         this.create_hitbox();
-        //this.physics.add.overlap (this.hitbox, this.enemy, this.enemy_damage, undefined, this);
         this.physics.add.overlap(this.hitbox, this.enemy, this.enemy_damage, this.hitbox_reset, this);
-        this.physics.add.collider(this.character, this.enemy, this.attacked, undefined, this);
+        //this.physics.add.collider(this.character, this.enemy, this.attacked, undefined, this);
+        //this.physics.add.overlap(this.character, this.enemy, this.attacked, undefined, this);
         
     
         this.add_bgm();   
@@ -56,6 +56,7 @@ class Play extends Phaser.Scene {
 
     createCameras() {
         this.cameras.main.startFollow(this.character);
+        //this.camera.setBounds(0);
     }
 
     createcharacter() {
@@ -74,7 +75,7 @@ class Play extends Phaser.Scene {
     }
     
     createCollider() {
-        this.physics.add.collider(this.character, this.enemy, this.hit);
+        //this.physics.add.collider(this.character, this.enemy, this.hit);
         this.physics.add.collider(this.enemy, this.layer);
         this.physics.add.collider(this.character, this.layer);
         this.layer.setCollisionBetween(0,70);
@@ -93,7 +94,8 @@ class Play extends Phaser.Scene {
         
         this.hitbox_set();
         
-
+        //this.physics.add.collider(this.character, this.enemy, this.attacked, undefined, this);
+        this.physics.add.overlap(this.character, this.enemy, this.attacked, undefined, this);
         // this.Bounce();        
     }
 
@@ -127,7 +129,19 @@ class Play extends Phaser.Scene {
     }
 
     attacked(){
-        this.character.hp - this.enemy.hp;
+        this.cameras.main.stopFollow();
+        this.character.x -= 10;
+        this.character.hp - this.enemy.attack;
+        this.time.addEvent({
+            delay: 600,
+            callback: this.cameras_reset,
+            callbackScope: this,
+            loop: false
+        });
+    }
+    cameras_reset(){
+        //this.cameras.main.setScroll(this.character.x, this.character.y);
+        this.cameras.main.startFollow(this.character, true, 0.5, 0.5);
     }
 
 

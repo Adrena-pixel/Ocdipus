@@ -58,12 +58,12 @@ class Character extends Phaser.GameObjects.Sprite {
             this.body.setVelocityX(250);
         }
 
-        if (this.character_hp == 0){
-            this.body.enable = false;
-            this.setActive(false).setVisible(false);
-            this.body.destroy();
-            console.log(character_hp);
-        }
+        // if (this.character_hp == 0){
+        //     this.body.enable = false;
+        //     this.setActive(false).setVisible(false);
+        //     this.body.destroy();
+        //     console.log(character_hp);
+        // }
 
     }
 }
