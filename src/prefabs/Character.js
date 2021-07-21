@@ -13,6 +13,7 @@ class Character extends Phaser.GameObjects.Sprite {
 
         this.direction = 'left';
         this.swing = false;
+        this.air_swing = false;
         this.moving = false;
         this.hit = 0;
         this.hp = 100;
@@ -54,6 +55,10 @@ class Character extends Phaser.GameObjects.Sprite {
         if (this.swing == true && onFloor){
             this.body.velocity.x = 0;
         }
+        if (onFloor){
+            this.air_swing = false;
+        }
+        
 
         if (keySHIFT.isDown && keyLEFT.isDown && keyRIGHT.isUp && onFloor ) {
             this.body.setVelocityX(-300);

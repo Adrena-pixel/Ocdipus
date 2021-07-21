@@ -43,7 +43,24 @@ class Play extends Phaser.Scene {
         this.charge();
         this.lose();
         this.win();
-        this.hitbox_set();      
+        this.hitbox_set();
+        
+        if (this.character.swing == true && !this.character.onFloor && !this.character.air_swing){
+            let x = this.character.body.velocity.x;
+            let y = this.character.body.velocity.y;
+            this.character.body.velocity.x = 0;
+            this.character.body.velocity.y = 0;
+
+            this.time.addEvent({
+                delay: 400,
+                callback: () => {
+                    this.character.body.velocity.x = x;
+                    //this.character.body.velocity.y = y;
+                    this.character.air_swing = true;
+                },
+                loop: false
+            })
+        }
     }
 
     display_hp(){
@@ -112,7 +129,7 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.enemy, this.layer);
         this.physics.add.collider(this.character, this.layer);
         this.layer.setCollisionBetween(0,70);
-        this.physics.add.overlap(this.hitbox, this.enemy, this.enemy_damage, undefined, this);
+        this.physics.add.overlap(this.hitbox, this.enemy, this.enemy_damage,  this.hitbox_reset, this);
     }
 
     hit() {
@@ -185,7 +202,7 @@ class Play extends Phaser.Scene {
                 this.character.swing = true;
 
                 this.time.addEvent({
-                    delay: 300,
+                    delay: 400,
                     callback: this.hitbox_reset,
                     callbackScope: this,
                     loop: false
@@ -199,7 +216,7 @@ class Play extends Phaser.Scene {
                 this.character.swing = true;
 
                 this.time.addEvent({
-                    delay: 300,
+                    delay: 400,
                     callback: this.hitbox_reset,
                     callbackScope: this,
                     loop: false
@@ -213,7 +230,7 @@ class Play extends Phaser.Scene {
 
         this.physics.world.remove(this.hitbox.body);
         this.hitbox.body.enable = false;
-        this.hitbox.alpha = 0;
+        //this.hitbox.alpha = 0;
         this.character.swing = false;
     }
     
