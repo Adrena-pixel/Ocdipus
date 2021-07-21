@@ -29,6 +29,21 @@ class Character extends Phaser.GameObjects.Sprite {
 
         const onFloor = this.body.onFloor();
         const onWall = this.body.onWall();
+
+
+        //add animation
+        if (keyLEFT.isDown && keyRIGHT.isUp && onFloor) {
+            this.anims.play( "character_walk_right", true);
+        }
+        else if(keyRIGHT.isDown && keyLEFT.isUp && onFloor){
+            this.anims.play( "character_walk_right", true);
+        }
+        else if (onFloor){
+            this.anims.play( "character_stand_right", true);
+        } else{
+            this.anims.play( "character_jump", true);
+        }
+
         
         if (Phaser.Input.Keyboard.JustDown(keyZ) && (onFloor || (onWall && this.jumpcount < this.secondjump))){
             this.jumpcount++
@@ -41,17 +56,15 @@ class Character extends Phaser.GameObjects.Sprite {
         }
 
         if (keyLEFT.isDown && keyRIGHT.isUp) {
-            this.anims.play( "character_walk_right", true);
+            
             this.body.setVelocityX(-250);
             this.moving = true;
             this.flipX = true;
         } else if (keyRIGHT.isDown && keyLEFT.isUp ) {
-            this.anims.play( "character_walk_right", true);
             this.body.setVelocityX(250);
             this.moving = true;
             this.flipX = false;
         } else {
-            this.anims.play( "character_stand_right", true);
             this.moving = false;
             this.body.velocity.x = 0;
         }
@@ -60,13 +73,11 @@ class Character extends Phaser.GameObjects.Sprite {
             this.body.velocity.x = 0;
         }
             
-        
-
-        if (keySHIFT.isDown && keyLEFT.isDown && keyRIGHT.isUp && onFloor ) {
+        /*if (keySHIFT.isDown && keyLEFT.isDown && keyRIGHT.isUp && onFloor ) {
             this.body.setVelocityX(-300);
         } else if (keySHIFT.isDown && keyRIGHT.isDown && keyLEFT.isUp && onFloor ) {
             this.body.setVelocityX(300);
-        }
+        }*/
         
         
     }

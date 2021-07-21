@@ -123,6 +123,12 @@ class Play extends Phaser.Scene {
             frameRate: 6,
             repeat: -1
         });
+        this.anims.create({
+            key: "character_jump",
+            frames: this.anims.generateFrameNumbers('jump', { start: 0, end: 1, first: 0}),
+            frameRate: 6,
+            repeat: -1
+        });
 
     }
 

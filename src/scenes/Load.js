@@ -43,6 +43,12 @@ class Load extends Phaser.Scene {
             startFrame: 0, 
             endFrame: 3
         });
+        this.load.spritesheet('jump', './assets/jump.png', {
+            frameWidth: 50,
+            frameHeight: 100,
+            startFrame: 0, 
+            endFrame: 1
+        });
     }
 
     create (){
