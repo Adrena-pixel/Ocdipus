@@ -36,18 +36,22 @@ class Character extends Phaser.GameObjects.Sprite {
             this.jumpSound.play();
             if(onFloor) {
                 this.jumpcount = 0;
+                this.air_swing = false;
             }
         }
 
         if (keyLEFT.isDown && keyRIGHT.isUp) {
+            this.anims.play( "character_walk_right", true);
             this.body.setVelocityX(-250);
             this.moving = true;
             this.flipX = true;
         } else if (keyRIGHT.isDown && keyLEFT.isUp ) {
+            this.anims.play( "character_walk_right", true);
             this.body.setVelocityX(250);
             this.moving = true;
             this.flipX = false;
         } else {
+            this.anims.play( "character_stand_right", true);
             this.moving = false;
             this.body.velocity.x = 0;
         }
@@ -55,9 +59,7 @@ class Character extends Phaser.GameObjects.Sprite {
         if (this.swing == true && onFloor){
             this.body.velocity.x = 0;
         }
-        if (onFloor){
-            this.air_swing = false;
-        }
+            
         
 
         if (keySHIFT.isDown && keyLEFT.isDown && keyRIGHT.isUp && onFloor ) {
@@ -65,13 +67,7 @@ class Character extends Phaser.GameObjects.Sprite {
         } else if (keySHIFT.isDown && keyRIGHT.isDown && keyLEFT.isUp && onFloor ) {
             this.body.setVelocityX(300);
         }
-
-        // if (this.character_hp == 0){
-        //     this.body.enable = false;
-        //     this.setActive(false).setVisible(false);
-        //     this.body.destroy();
-        //     console.log(character_hp);
-        // }
-
+        
+        
     }
 }

@@ -16,6 +16,7 @@ class Play extends Phaser.Scene {
         this.createInput();
         this.createCameras();
         this.create_animation();
+
         this.map = this.add.tilemap('map');
         var tile = this.map.addTilesetImage('tile', 'tiles'); //( name of tile in tiled, key)
         this.layer = this.map.createLayer('ground', tile, 0 ,0);
@@ -27,7 +28,7 @@ class Play extends Phaser.Scene {
         this.createCollider();
         
         
-        //this.display_hp();
+        this.display_hp();
         this.add_bgm();   
     }
 
@@ -67,9 +68,8 @@ class Play extends Phaser.Scene {
     }
 
     display_hp(){
-        this.hpText = this.add.text(this.character.x,this.character.y, `Hp: ${this.character.hp}`, { fontSize: '32px', fill: '#fffdf9'});
-        this.hpText.fixedToCamera = true;
-        //this.hpText.cameraOffset(this.character.x, this.character.y);
+        this.hpText = this.add.text(0,800, `Hp: ${this.character.hp}`, { fontSize: '32px', fill: '#fffdf9'}).setOrigin(0,0);
+        this.hpText.setScrollFactor(0,0);
     }
 
     //add background music
@@ -111,12 +111,24 @@ class Play extends Phaser.Scene {
             frameRate: 30,
             repeat: 0
         });
+        this.anims.create({
+            key: "character_stand_right",
+            frames: this.anims.generateFrameNumbers('stand_right', { start: 0, end: 3, first: 0}),
+            frameRate: 3,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "character_walk_right",
+            frames: this.anims.generateFrameNumbers('walk_right', { start: 0, end: 3, first: 0}),
+            frameRate: 6,
+            repeat: -1
+        });
 
     }
 
     createCameras() {
-        //this.cameras.main.setBounds(0, 0, 1000, 1000);
         this.cameras.main.startFollow(this.character);
+        this.cameras.main.zoom = 0.85;
     }
 
     createcharacter() {
@@ -143,21 +155,18 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.ntr_group, this.layer);
         this.physics.add.collider(this.character, this.layer);
         this.layer.setCollisionBetween(0,70);
-        //this.physics.add.collider(this.character, this.ntr_group, this.hit, undefined, this);
-        //this.physics.add.overlap(this.hitbox, this.ntr_2, this.ntr_1_damage,  this.hitbox_reset, this);
         this.ntr_group.getChildren().forEach(function(enemy) {
             this.physics.add.collider(this.character, enemy, function(){ this.hit(enemy);}, undefined, this);
           }, this);
         this.ntr_group.getChildren().forEach(function(enemy) {
             this.physics.add.overlap(this.hitbox, enemy, function(){ this.ntr_damage(enemy);}, this.hitbox_reset, this);
           }, this);
-        //this.physics.add.collider(this.character, this.enemy, function(){ this.hit(this.enemy);}, undefined, this);
-        //this.physics.add.collider(this.character, this.ntr_2, function(){ this.hit(this.ntr_2);}, undefined, this);
     }
 
     hit(enemy) {
         //console.log(character_hp);
         this.sound.play('be_hit');
+        this.character.hp -= enemy.attack;
         let dx = this.character.x - (enemy.x);
         let dy = -10;
         let dir = new Phaser.Math.Vector2(dx, dy).normalize().scale(500);
@@ -197,27 +206,7 @@ class Play extends Phaser.Scene {
           }, this);
 
     }
-    /*charge(enemy){
-        
-        if (this.range_check(this.character, enemy)){
-            if (enemy.x - this.character.x >= 0 && enemy.y - 60 <= this.character.y){
-                enemy.body.setVelocityX(-150);
-                
-            }else if (enemy.x - this.character.x < 0 && enemy.y - 60 <= this.character.y){
-                enemy.body.setVelocityX(150);
-            }
-            else {
-                enemy.body.setVelocityX(0);
-            }
-        }
-        else{
-            enemy.body.setVelocityX(0);
-            }
-
-    }*/
-
-
-
+ 
     //player attack
     //create new hitbox
     create_hitbox(){
@@ -231,13 +220,8 @@ class Play extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyX) && this.character.swing == false){
             this.sound.play('attack');
             this.hitbox.alpha = 1;
-            
-            //this.create_hitbox();
-
-           
 
             if (this.character.flipX == false){
-                //this.hitbox.scaleX = 1;
                 this.hitbox.anims.play('character_attack');
                 this.hitbox.x = this.character.x + this.character.width;
                 this.hitbox.y = this.character.y;
@@ -252,7 +236,6 @@ class Play extends Phaser.Scene {
                     loop: false
                 });
             }else{
-                //this.hitbox.scaleX = -1;
                 this.hitbox.anims.play('character_attack_left');
                 this.hitbox.x = this.character.x - this.hitbox.width;
                 this.hitbox.y = this.character.y;
@@ -297,9 +280,10 @@ class Play extends Phaser.Scene {
     lose(){
         if (this.character.y >= 1400 ||
             this.character.hp <= 0){
+                this.character.body.enable = false;
                 this.bgm.stop();
                 this.time.addEvent({
-                    delay: 100,
+                    delay: 0,
                     callback: () => {
                         this.scene.start('loseScene');
                     },

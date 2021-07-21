@@ -31,6 +31,18 @@ class Load extends Phaser.Scene {
             startFrame: 0, 
             endFrame: 6
         });
+        this.load.spritesheet('stand_right', './assets/stand_right.png', {
+            frameWidth: 50,
+            frameHeight: 100,
+            startFrame: 0, 
+            endFrame: 3
+        });
+        this.load.spritesheet('walk_right', './assets/walk_right.png', {
+            frameWidth: 50,
+            frameHeight: 100,
+            startFrame: 0, 
+            endFrame: 3
+        });
     }
 
     create (){
