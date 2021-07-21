@@ -1,5 +1,6 @@
 var cursors;
 var character_attack = 30;
+//var ntr_group;
 class Play extends Phaser.Scene {
     constructor() {
         super('playScene')
@@ -24,15 +25,16 @@ class Play extends Phaser.Scene {
         
         this.create_hitbox();
         this.createCollider();
-        //this.display_hp();
         
+        
+        //this.display_hp();
         this.add_bgm();   
     }
 
     update() {
         if (this.character.hit > 0){
             ++this.character.hit;
-            if (this.character.hit > 30){
+            if (this.character.hit > 20){
                 this.character.hit = 0;
             }
             return;
@@ -40,7 +42,8 @@ class Play extends Phaser.Scene {
         this.character.update();
         
         this.enemy.update();
-        this.charge();
+        this.ntr_2.update();
+        this.add_charge();
         this.lose();
         this.win();
         this.hitbox_set();
@@ -112,8 +115,8 @@ class Play extends Phaser.Scene {
     }
 
     createCameras() {
+        //this.cameras.main.setBounds(0, 0, 1000, 1000);
         this.cameras.main.startFollow(this.character);
-        //this.camera.setBounds(0);
     }
 
     createcharacter() {
@@ -128,21 +131,34 @@ class Play extends Phaser.Scene {
     }
 
     createenemy() {
+        this.ntr_group =  this.add.group();
         this.enemy = new Enemy(this, 3200, 640, 0).setOrigin(0,0);
+        this.ntr_2 = new Enemy(this, 4480, 750, 0).setOrigin(0,0);
+        this.ntr_group.add(this.enemy);
+        this.ntr_group.add(this.ntr_2);
     }
     
     createCollider() {
-        this.physics.add.collider(this.character, this.enemy, this.hit, undefined, this);
-        this.physics.add.collider(this.enemy, this.layer);
+       
+        this.physics.add.collider(this.ntr_group, this.layer);
         this.physics.add.collider(this.character, this.layer);
         this.layer.setCollisionBetween(0,70);
-        this.physics.add.overlap(this.hitbox, this.enemy, this.enemy_damage,  this.hitbox_reset, this);
+        //this.physics.add.collider(this.character, this.ntr_group, this.hit, undefined, this);
+        //this.physics.add.overlap(this.hitbox, this.ntr_2, this.ntr_1_damage,  this.hitbox_reset, this);
+        this.ntr_group.getChildren().forEach(function(enemy) {
+            this.physics.add.collider(this.character, enemy, function(){ this.hit(enemy);}, undefined, this);
+          }, this);
+        this.ntr_group.getChildren().forEach(function(enemy) {
+            this.physics.add.overlap(this.hitbox, enemy, function(){ this.ntr_damage(enemy);}, this.hitbox_reset, this);
+          }, this);
+        //this.physics.add.collider(this.character, this.enemy, function(){ this.hit(this.enemy);}, undefined, this);
+        //this.physics.add.collider(this.character, this.ntr_2, function(){ this.hit(this.ntr_2);}, undefined, this);
     }
 
-    hit() {
+    hit(enemy) {
         //console.log(character_hp);
         this.sound.play('be_hit');
-        let dx = this.character.x - (this.enemy.x);
+        let dx = this.character.x - (enemy.x);
         let dy = -10;
         let dir = new Phaser.Math.Vector2(dx, dy).normalize().scale(500);
         this.character.body.setVelocity(dir.x, dir.y);
@@ -162,24 +178,43 @@ class Play extends Phaser.Scene {
         }
     }
    
-    charge(){
+    add_charge(){
+        this.ntr_group.getChildren().forEach(function(enemy) {
+            if (this.range_check(this.character, enemy)){
+                if (enemy.x - this.character.x >= 0 && enemy.y - 60 <= this.character.y){
+                    enemy.body.setVelocityX(-150);
+                    
+                }else if (enemy.x - this.character.x < 0 && enemy.y - 60 <= this.character.y){
+                    enemy.body.setVelocityX(150);
+                }
+                else {
+                    enemy.body.setVelocityX(0);
+                }
+            }
+            else{
+                enemy.body.setVelocityX(0);
+                }
+          }, this);
+
+    }
+    /*charge(enemy){
         
-        if (this.range_check(this.character, this.enemy)){
-            if (this.enemy.x - this.character.x >= 0 && this.enemy.y - 60 <= this.character.y){
-                this.enemy.body.setVelocityX(-150);
+        if (this.range_check(this.character, enemy)){
+            if (enemy.x - this.character.x >= 0 && enemy.y - 60 <= this.character.y){
+                enemy.body.setVelocityX(-150);
                 
-            }else if (this.enemy.x - this.character.x < 0 && this.enemy.y - 60 <= this.character.y){
-                this.enemy.body.setVelocityX(150);
+            }else if (enemy.x - this.character.x < 0 && enemy.y - 60 <= this.character.y){
+                enemy.body.setVelocityX(150);
             }
             else {
-                this.enemy.body.setVelocityX(0);
+                enemy.body.setVelocityX(0);
             }
         }
         else{
-            this.enemy.body.setVelocityX(0);
+            enemy.body.setVelocityX(0);
             }
 
-    }
+    }*/
 
 
 
@@ -244,17 +279,17 @@ class Play extends Phaser.Scene {
         this.character.swing = false;
     }
     
-    enemy_damage(){
+    ntr_damage(enemy){
         //console.log('enemy_damage');
-        if (this.enemy.x - this.character.x > 0){ //the enemy is right to the player
-            this.enemy.x += 100;
-            this.enemy.y -= 20;
-            this.enemy.hp -= character_attack;
+        if (enemy.x - this.character.x > 0){ //the enemy is right to the player
+            enemy.x += 100;
+            enemy.y -= 20;
+            enemy.hp -= character_attack;
         }
-        else if (this.enemy.x - this.character.x < 0){
-            this.enemy.x -= 100;
-            this.enemy.y -= 20;
-            this.enemy.hp -= character_attack;
+        else if (enemy.x - this.character.x < 0){
+            enemy.x -= 100;
+            enemy.y -= 20;
+            enemy.hp -= character_attack;
         }
 
     }
