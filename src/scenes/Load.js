@@ -25,6 +25,12 @@ class Load extends Phaser.Scene {
             startFrame: 0, 
             endFrame: 6
         });
+        this.load.spritesheet('attack_left', './assets/attack(left).png', {
+            frameWidth: 100,
+            frameHeight: 80,
+            startFrame: 0, 
+            endFrame: 6
+        });
     }
 
     create (){

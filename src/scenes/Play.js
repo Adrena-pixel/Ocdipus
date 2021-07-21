@@ -102,6 +102,13 @@ class Play extends Phaser.Scene {
             frameRate: 30,
             repeat: 0
         });
+        this.anims.create({
+            key: "character_attack_left",
+            frames: this.anims.generateFrameNumbers('attack_left', { start: 0, end: 6, first: 0}),
+            frameRate: 30,
+            repeat: 0
+        });
+
     }
 
     createCameras() {
@@ -191,10 +198,12 @@ class Play extends Phaser.Scene {
             this.hitbox.alpha = 1;
             
             //this.create_hitbox();
-            this.hitbox.anims.play('character_attack');
+
+           
 
             if (this.character.flipX == false){
                 //this.hitbox.scaleX = 1;
+                this.hitbox.anims.play('character_attack');
                 this.hitbox.x = this.character.x + this.character.width;
                 this.hitbox.y = this.character.y;
                 this.physics.world.add(this.hitbox.body);
@@ -209,6 +218,7 @@ class Play extends Phaser.Scene {
                 });
             }else{
                 //this.hitbox.scaleX = -1;
+                this.hitbox.anims.play('character_attack_left');
                 this.hitbox.x = this.character.x - this.hitbox.width;
                 this.hitbox.y = this.character.y;
                 this.physics.world.add(this.hitbox.body);
