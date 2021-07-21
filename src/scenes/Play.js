@@ -197,9 +197,11 @@ class Play extends Phaser.Scene {
         this.ntr_group.getChildren().forEach(function(enemy) {
             if (this.range_check(this.character, enemy)){
                 if (enemy.x - this.character.x >= 0 && enemy.y - 60 <= this.character.y){
+                    enemy.flipX = false;
                     enemy.body.setVelocityX(-150);
                     
                 }else if (enemy.x - this.character.x < 0 && enemy.y - 60 <= this.character.y){
+                    enemy.flipX = true;
                     enemy.body.setVelocityX(150);
                 }
                 else {
