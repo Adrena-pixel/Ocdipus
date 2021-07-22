@@ -68,8 +68,21 @@ class Play extends Phaser.Scene {
     }
 
     display_hp(){
-        this.hpText = this.add.text(0,800, `Hp: ${this.character.hp}`, { fontSize: '32px', fill: '#fffdf9'}).setOrigin(0,0);
+        this.hpText = this.add.text(400,0, `Hp: ${this.character.hp}`, { fontSize: '32px', fill: '#fffdf9'}).setOrigin(0,0);
         this.hpText.setScrollFactor(0,0);
+        this.hpTimer = this.time.addEvent({
+            delay: 0,
+            callback: ()=> {
+                //this.hpText = this.character.hp;
+                if (this.character.hp <= 0){
+                    this.hpText.setText(`Hp: ${0}`);
+                }else{
+                    this.hpText.setText(`Hp: ${this.character.hp}`);
+                }
+            },
+            callbackScope: this,
+            loop: true
+        });
     }
 
     //add background music
@@ -129,6 +142,24 @@ class Play extends Phaser.Scene {
             frameRate: 6,
             repeat: -1
         });
+        this.anims.create({
+            key: "ntr_charge",
+            frames: this.anims.generateFrameNumbers('ntr_charge', { start: 0, end: 3, first: 0}),
+            frameRate: 8,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "ntr_stand",
+            frames: this.anims.generateFrameNumbers('ntr_stand', { start: 0, end: 1, first: 0}),
+            frameRate: 4,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "ntr_die",
+            frames: this.anims.generateFrameNumbers('ntr_die', { start: 0, end: 9, first: 0}),
+            frameRate: 6,
+            repeat: 0
+        });
 
     }
 
@@ -167,6 +198,7 @@ class Play extends Phaser.Scene {
         this.ntr_group.getChildren().forEach(function(enemy) {
             this.physics.add.overlap(this.hitbox, enemy, function(){ this.ntr_damage(enemy);}, this.hitbox_reset, this);
           }, this);
+
     }
 
     hit(enemy) {
@@ -196,9 +228,11 @@ class Play extends Phaser.Scene {
     add_charge(){
         this.ntr_group.getChildren().forEach(function(enemy) {
             if (this.range_check(this.character, enemy)){
+                
                 if (enemy.x - this.character.x >= 0 && enemy.y - 60 <= this.character.y){
                     enemy.flipX = false;
                     enemy.body.setVelocityX(-150);
+                    
                     
                 }else if (enemy.x - this.character.x < 0 && enemy.y - 60 <= this.character.y){
                     enemy.flipX = true;
@@ -285,10 +319,13 @@ class Play extends Phaser.Scene {
 
     }
 
+
     lose(){
         if (this.character.y >= 1400 ||
             this.character.hp <= 0){
                 this.character.body.enable = false;
+                this.character.setActive(false);
+                this.character.body.destroy();
                 this.bgm.stop();
                 this.time.addEvent({
                     delay: 0,

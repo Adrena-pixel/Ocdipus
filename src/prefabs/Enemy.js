@@ -16,17 +16,21 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.body.setImmovable(true);
 
         if (this.hp == 0){
-            this.body.enable = false;
+            //this.body.setVelocityX(0);
+            //let x = this.x;
+            //let y = this.y
+            //let s = this.add.sprite(x, y, 'ntr_die').setOrigin(0, 0);
+            //s.anims.play('ntr_die');
             this.setActive(false).setVisible(false);
+            this.body.enable = false;
             this.body.destroy();
-        }
-
-        
+            //s.destroy();
+            
+            //this.body.enable = false;
+            //this.setActive(false).setVisible(false);
+            //this.body.destroy();
+        }  
         
     }
-
-   
-
-    
     
 }
