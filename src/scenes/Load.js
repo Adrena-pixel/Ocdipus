@@ -21,6 +21,7 @@ class Load extends Phaser.Scene {
         this.load.audio('be_hit', './assets/beHit.wav');
         this.load.audio('ntr_die', './assets/mntrDie.wav');
         this.load.audio('ntr_hurt', './assets/hitEnemy.wav');
+        this.load.audio('c_die', './assets/charaDie.wav');
         this.load.audio('bgm', './assets/OdpsBGM.mp3');
 
 

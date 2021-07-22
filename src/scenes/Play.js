@@ -403,9 +403,10 @@ class Play extends Phaser.Scene {
                 this.character.body.enable = false;
                 this.character.setActive(false);
                 this.character.body.destroy();
+                this.sound.play('c_die');
                 this.bgm.stop();
                 this.time.addEvent({
-                    delay: 0,
+                    delay: 10,
                     callback: () => {
                         this.scene.start('loseScene');
                     },
