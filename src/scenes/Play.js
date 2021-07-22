@@ -235,7 +235,7 @@ class Play extends Phaser.Scene {
             this.physics.add.collider(this.character, enemy, function(){ this.hit(enemy);}, undefined, this);
           }, this);
         this.ntr_group.getChildren().forEach(function(enemy) {
-            this.physics.add.overlap(this.hitbox, enemy, function(){ this.ntr_damage(enemy);}, this.hitbox_reset, this);
+            this.physics.add.overlap(this.hitbox, enemy, function(){ this.ntr_damage(enemy);}, undefined, this);
           }, this);
 
         this.physics.add.collider(this.character, this.goal, this.win, undefined, this);
