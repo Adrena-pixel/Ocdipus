@@ -32,15 +32,31 @@ class Menu extends Phaser.Scene {
             },
             fixedWidth: 0
         }
+        let cConfig = {
+            fontFamily: 'Courier',
+            fontSize: '40px',
+            //backgroundColor: '#F3B141',
+            color: '#ffd544',
+            align: 'center',
+            padding: {
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+            },
+            fixedWidth: 0
+        }
 
         
-        this.add.image(200, 50, 'title').setOrigin(0, 0);
+        this.add.image(350, 50, 'title').setOrigin(0, 0);
         
-        this.add.text(275, 250, 'press z to start', menuConfig).setOrigin(0, 0);
+        this.add.text(350, 250, 'press z to start', menuConfig).setOrigin(0, 0);
 
-        this.add.text(275, 350, 'press z: jump', textConfig).setOrigin(0, 0);
-        this.add.text(275, 450, 'press z while on wall: wall jump (maximum 3 times)', textConfig).setOrigin(0, 0);
-        this.add.text(275, 550, 'press x to attack', textConfig).setOrigin(0, 0);
+        this.add.text(350, 350, 'press z: jump', textConfig).setOrigin(0, 0);
+        this.add.text(350, 450, 'press z while on wall: wall jump (maximum 3 times)', textConfig).setOrigin(0, 0);
+        this.add.text(350, 550, 'press x to attack', textConfig).setOrigin(0, 0);
+
+        this.add.text(350, 650, 'Turtle Head presents', cConfig).setOrigin(0, 0);
 
 
         keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
