@@ -62,7 +62,7 @@ class Play extends Phaser.Scene {
             this.character.body.velocity.y = 0;
 
             this.time.addEvent({
-                delay: 400,
+                delay: 600,
                 callback: () => {
                     this.character.body.velocity.x = x;
                     //this.character.body.velocity.y = y;

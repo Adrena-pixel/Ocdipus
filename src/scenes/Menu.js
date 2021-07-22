@@ -34,7 +34,7 @@ class Menu extends Phaser.Scene {
         }
         let cConfig = {
             fontFamily: 'Courier',
-            fontSize: '40px',
+            fontSize: '35px',
             //backgroundColor: '#F3B141',
             color: '#ffd544',
             align: 'center',
@@ -53,8 +53,9 @@ class Menu extends Phaser.Scene {
         this.add.text(350, 250, 'press z to start', menuConfig).setOrigin(0, 0);
 
         this.add.text(350, 350, 'press z: jump', textConfig).setOrigin(0, 0);
+        this.add.text(350, 400, 'press left/right arrow: move', textConfig).setOrigin(0, 0);
         this.add.text(350, 450, 'press z while on wall: wall jump (maximum 3 times)', textConfig).setOrigin(0, 0);
-        this.add.text(350, 550, 'press x to attack', textConfig).setOrigin(0, 0);
+        this.add.text(350, 500, 'press x to attack', textConfig).setOrigin(0, 0);
 
         this.add.text(350, 650, 'Turtle Head presents', cConfig).setOrigin(0, 0);
 
