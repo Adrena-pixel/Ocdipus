@@ -21,7 +21,7 @@ class Play extends Phaser.Scene {
         var tile = this.map.addTilesetImage('tile', 'tiles'); //( name of tile in tiled, key)
         this.layer = this.map.createLayer('ground', tile, 0 ,0);
 
-        this.goal = this.add.sprite(5400, 450, 'enemy');
+        //this.goal = this.add.sprite(5400, 450, 'enemy');
 
         
         this.create_hitbox();
@@ -42,6 +42,9 @@ class Play extends Phaser.Scene {
         
         this.enemy.update();
         this.ntr_2.update();
+        this.ntr_3.update();
+        this.ntr_4.update();
+        this.ntr_5.update();
         this.add_ntr_anims();
         this.add_charge();
         this.lose();
@@ -205,9 +208,15 @@ class Play extends Phaser.Scene {
     createenemy() {
         this.ntr_group =  this.add.group();
         this.enemy = new Enemy(this, 3200, 640, 0).setOrigin(0,0);
-        this.ntr_2 = new Enemy(this, 4480, 750, 0).setOrigin(0,0);
+        this.ntr_2 = new Enemy(this, 4800, 750, 0).setOrigin(0,0);
+        this.ntr_3 = new Enemy(this, 5440, 750, 0).setOrigin(0,0);
+        this.ntr_4 = new Enemy(this, 5440, 300, 0).setOrigin(0,0);
+        this.ntr_5 = new Enemy(this, 6720, 600, 0).setOrigin(0,0);
         this.ntr_group.add(this.enemy);
         this.ntr_group.add(this.ntr_2);
+        this.ntr_group.add(this.ntr_3);
+        this.ntr_group.add(this.ntr_4);
+        this.ntr_group.add(this.ntr_5);
     }
     
     createCollider() {
@@ -391,7 +400,8 @@ class Play extends Phaser.Scene {
             }
     }
     win(){
-        if (this.character.x >= 5400- this.character.width){ //6272
+        if (this.character.x >= 8000 - this.character.width * 10 &&
+            this.character.y <= 288 - this.character.height){ //6272
             this.bgm.stop();
             this.time.addEvent({
                 delay: 0,
