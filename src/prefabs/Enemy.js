@@ -5,7 +5,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.body.setSize(this.width * 0.8, this.height*0.9);
-        this.hp = 120;
+        this.hp = 150;
         this.attack = 30;
         this.hurt = 0;
 

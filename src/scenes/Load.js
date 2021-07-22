@@ -20,7 +20,9 @@ class Load extends Phaser.Scene {
         this.load.audio('attack', './assets/meleeAttack.wav');
         this.load.audio('be_hit', './assets/beHit.wav');
         this.load.audio('ntr_die', './assets/mntrDie.wav');
+        this.load.audio('ntr_hurt', './assets/hitEnemy.wav');
         this.load.audio('bgm', './assets/OdpsBGM.mp3');
+
 
         this.load.spritesheet('attack', './assets/attack.png', {
             frameWidth: 100,

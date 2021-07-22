@@ -10,6 +10,10 @@ class Play extends Phaser.Scene {
         this.beattacked = false;
         this.BounceVelocity = 250;
 
+        this.bg = this.add.sprite(-80, -50, 'bg').setOrigin(0,0);
+        this.bg.setScrollFactor(0,0);
+        //this.bg.fixedToCamera = true;
+
         this.createenemy();
         this.createcharacter();
         this.createInput();
@@ -70,7 +74,7 @@ class Play extends Phaser.Scene {
     }
 
     display_hp(){
-        this.hpText = this.add.text(400,0, `Hp: ${this.character.hp}`, { fontSize: '32px', fill: '#fffdf9'}).setOrigin(0,0);
+        this.hpText = this.add.text(100,0, `Hp: ${this.character.hp}`, { fontSize: '32px', fill: '#f65439'}).setOrigin(0,0);
         this.hpText.setScrollFactor(0,0);
         this.hpTimer = this.time.addEvent({
             delay: 0,
@@ -184,7 +188,7 @@ class Play extends Phaser.Scene {
             key: "ntr_hurt",
             frames: this.anims.generateFrameNumbers('ntr_hurt', { start: 0, end: 1, first: 0}),
             frameRate: 12,
-            repeat: 2
+            repeat: 1
         });
         this.anims.create({
             key: "goal",
@@ -197,7 +201,8 @@ class Play extends Phaser.Scene {
 
     createCameras() {
         this.cameras.main.startFollow(this.character);
-        this.cameras.main.zoom = 0.85;
+        this.cameras.y -= 400;
+        this.cameras.main.zoom = 0.9;
     }
 
     createcharacter() {
@@ -334,7 +339,7 @@ class Play extends Phaser.Scene {
                 this.character.swing = true;
 
                 this.time.addEvent({
-                    delay: 400,
+                    delay: 300,
                     callback: this.hitbox_reset,
                     callbackScope: this,
                     loop: false
@@ -348,7 +353,7 @@ class Play extends Phaser.Scene {
                 this.character.swing = true;
 
                 this.time.addEvent({
-                    delay: 400,
+                    delay: 300,
                     callback: this.hitbox_reset,
                     callbackScope: this,
                     loop: false
@@ -367,6 +372,7 @@ class Play extends Phaser.Scene {
     }
     
     ntr_damage(enemy){
+        this.sound.play('ntr_hurt');
         //console.log('enemy_damage');
         //enemy.anims.stop();
         enemy.hurt = 1;
@@ -410,17 +416,6 @@ class Play extends Phaser.Scene {
     win(){
         this.bgm.stop();
         this.scene.start('winScene');
-        /*if (this.character.x >= 8000 &&
-            this.character.y <= 150){ //6272
-            this.bgm.stop();
-            this.time.addEvent({
-                delay: 0,
-                callback: () => {
-                    this.scene.start('winScene');
-                },
-                loop: false
-            })
-        }*/
     }
    
     
