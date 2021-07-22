@@ -154,6 +154,12 @@ class Play extends Phaser.Scene {
             repeat: 0
         });
         this.anims.create({
+            key: "c_hurt",
+            frames: this.anims.generateFrameNumbers('c_hurt', { start: 0, end: 1, first: 0}),
+            frameRate: 15,
+            repeat: 2
+        });
+        this.anims.create({
             key: "ntr_charge",
             frames: this.anims.generateFrameNumbers('ntr_charge', { start: 0, end: 3, first: 0}),
             frameRate: 8,
@@ -227,6 +233,14 @@ class Play extends Phaser.Scene {
         let dir = new Phaser.Math.Vector2(dx, dy).normalize().scale(500);
         this.character.body.setVelocity(dir.x, dir.y);
         this.character.hit = 1;
+        this.time.addEvent({
+            delay: 1000,
+            callback: () => {
+                this.character.hit = 0;
+            },
+            loop: false
+        })
+        
     }
 
 

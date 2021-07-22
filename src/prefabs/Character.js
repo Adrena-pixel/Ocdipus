@@ -32,20 +32,22 @@ class Character extends Phaser.GameObjects.Sprite {
 
 
         //add animation
-        if (keyLEFT.isDown && keyRIGHT.isUp && onFloor && !this.swing) {
+        if (keyLEFT.isDown && keyRIGHT.isUp && onFloor && !this.swing && this.hit == 0) {
             this.anims.play( "character_walk_right", true);
         }
-        else if(keyRIGHT.isDown && keyLEFT.isUp && onFloor && !this.swing){
+        else if(keyRIGHT.isDown && keyLEFT.isUp && onFloor && !this.swing && this.hit == 0){
             this.anims.play( "character_walk_right", true);
         }
-        else if (onFloor && !this.swing){
+        else if (onFloor && !this.swing && this.hit == 0){
             this.anims.play( "character_stand_right", true);
-        } else if (!onFloor && !this.swing){
+        } else if (!onFloor && !this.swing && this.hit == 0){
             this.anims.play( "character_jump", true);
-        }else if (onFloor && this.swing){
+        }else if (onFloor && this.swing && this.hit == 0){
             this.anims.play( "c_attack", true);
-        }else if (!onFloor && this.swing){
+        }else if (!onFloor && this.swing && this.hit == 0){
             this.anims.play( "c_airattack", true);
+        }else if ( this.hit == 1){
+            this.anims.play( "c_hurt", true);
         }
 
         

@@ -23,8 +23,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
             //let x = this.x;
             //let y = this.y
             //let s = this.add.sprite(x, y, 'ntr_die').setOrigin(0, 0);
-            this.diesound.play();
-            this.anims.play('ntr_die');
+            //this.diesound.play();
+            //this.anims.play('ntr_die');
                                
             this.setActive(false).setVisible(false);
             this.body.enable = false;

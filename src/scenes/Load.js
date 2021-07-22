@@ -62,6 +62,12 @@ class Load extends Phaser.Scene {
             startFrame: 0, 
             endFrame: 5
         });
+        this.load.spritesheet('c_hurt', './assets/c_hurt.png', {
+            frameWidth: 50,
+            frameHeight: 100,
+            startFrame: 0, 
+            endFrame: 1
+        });
         this.load.spritesheet('ntr_charge', './assets/ntr_charge.png', {
             frameWidth: 120,
             frameHeight: 150,
@@ -86,6 +92,7 @@ class Load extends Phaser.Scene {
             startFrame: 0, 
             endFrame: 1
         });
+        
     }
 
     create (){
