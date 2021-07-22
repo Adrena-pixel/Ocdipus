@@ -26,8 +26,6 @@ class Play extends Phaser.Scene {
         
         this.create_hitbox();
         this.createCollider();
-        
-        
         this.display_hp();
         this.add_bgm();   
     }
@@ -44,6 +42,7 @@ class Play extends Phaser.Scene {
         
         this.enemy.update();
         this.ntr_2.update();
+        this.add_ntr_anims();
         this.add_charge();
         this.lose();
         this.win();
@@ -150,7 +149,7 @@ class Play extends Phaser.Scene {
         });
         this.anims.create({
             key: "ntr_stand",
-            frames: this.anims.generateFrameNumbers('ntr_stand', { start: 0, end: 1, first: 0}),
+            frames: this.anims.generateFrameNumbers('ntr_stand', { start: 0, end: 4, first: 0}),
             frameRate: 4,
             repeat: -1
         });
@@ -246,7 +245,18 @@ class Play extends Phaser.Scene {
                 enemy.body.setVelocityX(0);
                 }
           }, this);
-
+    }
+    add_ntr_anims(){
+        this.ntr_group.getChildren().forEach(function(enemy) {
+            if (enemy.body.velocity.x == 0){
+                //enemy.anims.stop('ntr_charge');
+                enemy.anims.play('ntr_stand', true);
+            }
+            else{
+                //enemy.anims.stop('ntr_stand');
+                enemy.anims.play('ntr_charge', true);
+            }
+        });
     }
  
     //player attack
