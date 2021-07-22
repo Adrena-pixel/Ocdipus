@@ -17,6 +17,7 @@ class Load extends Phaser.Scene {
         this.load.audio('jump', './assets/JumpOdps.wav');
         this.load.audio('attack', './assets/meleeAttack.wav');
         this.load.audio('be_hit', './assets/beHit.wav');
+        this.load.audio('ntr_die', './assets/mntrDie.wav');
         this.load.audio('bgm', './assets/OdpsBGM.mp3');
 
         this.load.spritesheet('attack', './assets/attack.png', {
@@ -49,6 +50,18 @@ class Load extends Phaser.Scene {
             startFrame: 0, 
             endFrame: 1
         });
+        this.load.spritesheet('c_attack', './assets/c_attack.png', {
+            frameWidth: 50,
+            frameHeight: 100,
+            startFrame: 0, 
+            endFrame: 4
+        });
+        this.load.spritesheet('c_airattack', './assets/c_airattack.png', {
+            frameWidth: 50,
+            frameHeight: 100,
+            startFrame: 0, 
+            endFrame: 5
+        });
         this.load.spritesheet('ntr_charge', './assets/ntr_charge.png', {
             frameWidth: 120,
             frameHeight: 150,
@@ -66,6 +79,12 @@ class Load extends Phaser.Scene {
             frameHeight: 150,
             startFrame: 0, 
             endFrame: 9
+        });
+        this.load.spritesheet('ntr_hurt', './assets/ntr_hurt.png', {
+            frameWidth: 120,
+            frameHeight: 150,
+            startFrame: 0, 
+            endFrame: 1
         });
     }
 

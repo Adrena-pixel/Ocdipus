@@ -142,6 +142,18 @@ class Play extends Phaser.Scene {
             repeat: -1
         });
         this.anims.create({
+            key: "c_attack",
+            frames: this.anims.generateFrameNumbers('c_attack', { start: 0, end: 4, first: 0}),
+            frameRate: 15,
+            repeat: 0
+        });
+        this.anims.create({
+            key: "c_airattack",
+            frames: this.anims.generateFrameNumbers('c_airattack', { start: 0, end: 5, first: 0}),
+            frameRate: 20,
+            repeat: 0
+        });
+        this.anims.create({
             key: "ntr_charge",
             frames: this.anims.generateFrameNumbers('ntr_charge', { start: 0, end: 3, first: 0}),
             frameRate: 8,
@@ -157,7 +169,13 @@ class Play extends Phaser.Scene {
             key: "ntr_die",
             frames: this.anims.generateFrameNumbers('ntr_die', { start: 0, end: 9, first: 0}),
             frameRate: 6,
-            repeat: 0
+            repeat: 1
+        });
+        this.anims.create({
+            key: "ntr_hurt",
+            frames: this.anims.generateFrameNumbers('ntr_hurt', { start: 0, end: 1, first: 0}),
+            frameRate: 12,
+            repeat: 2
         });
 
     }
@@ -248,13 +266,16 @@ class Play extends Phaser.Scene {
     }
     add_ntr_anims(){
         this.ntr_group.getChildren().forEach(function(enemy) {
-            if (enemy.body.velocity.x == 0){
+            if (enemy.body.velocity.x == 0 && enemy.hurt == 0){
                 //enemy.anims.stop('ntr_charge');
                 enemy.anims.play('ntr_stand', true);
             }
-            else{
+            else if (enemy.body.velocity.x != 0 && enemy.hurt == 0){
                 //enemy.anims.stop('ntr_stand');
                 enemy.anims.play('ntr_charge', true);
+            }
+            else if (enemy.hurt == 1){
+                enemy.anims.play('ntr_hurt', true);
             }
         });
     }
@@ -316,6 +337,8 @@ class Play extends Phaser.Scene {
     
     ntr_damage(enemy){
         //console.log('enemy_damage');
+        //enemy.anims.stop();
+        enemy.hurt = 1;
         if (enemy.x - this.character.x > 0){ //the enemy is right to the player
             enemy.x += 100;
             enemy.y -= 20;
@@ -326,7 +349,14 @@ class Play extends Phaser.Scene {
             enemy.y -= 20;
             enemy.hp -= character_attack;
         }
-
+        this.time.addEvent({
+            delay: 500,
+            callback: ()=> {
+               enemy.hurt = 0;
+            },
+            callbackScope: this,
+            loop: false
+        });
     }
 
 

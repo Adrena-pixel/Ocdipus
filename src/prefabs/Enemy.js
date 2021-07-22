@@ -7,6 +7,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.body.setSize(this.width * 0.8, this.height);
         this.hp = 120;
         this.attack = 30;
+        this.hurt = 0;
+
+        this.diesound = scene.sound.add('ntr_die');
     }
 
     update() {
@@ -15,20 +18,18 @@ class Enemy extends Phaser.GameObjects.Sprite {
         //this.body.setCircle(50, 0, 0);
         this.body.setImmovable(true);
 
-        if (this.hp == 0){
+        if (this.hp <= 0){
             //this.body.setVelocityX(0);
             //let x = this.x;
             //let y = this.y
             //let s = this.add.sprite(x, y, 'ntr_die').setOrigin(0, 0);
-            //s.anims.play('ntr_die');
+            this.diesound.play();
+            this.anims.play('ntr_die');
+                               
             this.setActive(false).setVisible(false);
             this.body.enable = false;
             this.body.destroy();
-            //s.destroy();
-            
-            //this.body.enable = false;
-            //this.setActive(false).setVisible(false);
-            //this.body.destroy();
+ 
         }  
         
     }
