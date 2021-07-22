@@ -10,7 +10,6 @@ class Play extends Phaser.Scene {
         this.beattacked = false;
         this.BounceVelocity = 250;
 
-        
         this.createenemy();
         this.createcharacter();
         this.createInput();
