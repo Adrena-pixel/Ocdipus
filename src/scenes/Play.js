@@ -16,15 +16,15 @@ class Play extends Phaser.Scene {
         this.createInput();
         this.createCameras();
         this.create_animation();
+
         this.goal = this.add.sprite(8000, 138,'win').setOrigin(0,0);
         this.goal.anims.play('goal');
+        this.physics.add.existing(this.goal);
+
         this.map = this.add.tilemap('map');
         var tile = this.map.addTilesetImage('tile', 'tiles'); //( name of tile in tiled, key)
         this.layer = this.map.createLayer('ground', tile, 0 ,0);
 
-        //this.goal = this.add.sprite(5400, 450, 'enemy');
-
-        
         this.create_hitbox();
         this.createCollider();
         this.display_hp();
@@ -49,7 +49,7 @@ class Play extends Phaser.Scene {
         this.add_ntr_anims();
         this.add_charge();
         this.lose();
-        this.win();
+        //this.win();
         this.hitbox_set();
         
         if (this.character.swing == true && !this.character.onFloor && !this.character.air_swing){
@@ -238,6 +238,8 @@ class Play extends Phaser.Scene {
             this.physics.add.overlap(this.hitbox, enemy, function(){ this.ntr_damage(enemy);}, this.hitbox_reset, this);
           }, this);
 
+        this.physics.add.collider(this.character, this.goal, this.win, undefined, this);
+
     }
 
     hit(enemy) {
@@ -407,8 +409,10 @@ class Play extends Phaser.Scene {
             }
     }
     win(){
-        if (this.character.x >= 8000 - this.character.width * 10 &&
-            this.character.y <= 288 - this.character.height){ //6272
+        this.bgm.stop();
+        this.scene.start('winScene');
+        /*if (this.character.x >= 8000 &&
+            this.character.y <= 150){ //6272
             this.bgm.stop();
             this.time.addEvent({
                 delay: 0,
@@ -417,7 +421,7 @@ class Play extends Phaser.Scene {
                 },
                 loop: false
             })
-        }
+        }*/
     }
    
     
