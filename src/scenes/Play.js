@@ -16,7 +16,8 @@ class Play extends Phaser.Scene {
         this.createInput();
         this.createCameras();
         this.create_animation();
-
+        this.goal = this.add.sprite(8000, 138,'win').setOrigin(0,0);
+        this.goal.anims.play('goal');
         this.map = this.add.tilemap('map');
         var tile = this.map.addTilesetImage('tile', 'tiles'); //( name of tile in tiled, key)
         this.layer = this.map.createLayer('ground', tile, 0 ,0);
@@ -185,6 +186,12 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('ntr_hurt', { start: 0, end: 1, first: 0}),
             frameRate: 12,
             repeat: 2
+        });
+        this.anims.create({
+            key: "goal",
+            frames: this.anims.generateFrameNumbers('goal', { start: 0, end: 2, first: 0}),
+            frameRate: 6,
+            repeat: -1
         });
 
     }

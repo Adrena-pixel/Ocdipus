@@ -18,7 +18,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         //this.body.setCircle(50, 0, 0);
         this.body.setImmovable(true);
 
-        if (this.hp <= 0){
+        if (this.hp <= 0 || this.y >= 1400){
             //this.body.setVelocityX(0);
             //let x = this.x;
             //let y = this.y

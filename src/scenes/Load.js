@@ -11,7 +11,8 @@ class Load extends Phaser.Scene {
 
         this.load.image('tiles', './assets/tile.png');
         this.load.image('title', './assets/title.png');
-        this.load.image('hitbox', './assets/hitbox.png')
+        this.load.image('hitbox', './assets/hitbox.png');
+        this.load.image('win', './assets/goal.png');
         this.load.tilemapTiledJSON('map','./assets/mapsheet.json'); //load tile map
 
         this.load.audio('jump', './assets/JumpOdps.wav');
@@ -91,6 +92,12 @@ class Load extends Phaser.Scene {
             frameHeight: 150,
             startFrame: 0, 
             endFrame: 1
+        });
+        this.load.spritesheet('goal', './assets/finalAtgny.png', {
+            frameWidth: 60,
+            frameHeight: 150,
+            startFrame: 0, 
+            endFrame: 2
         });
         
     }
